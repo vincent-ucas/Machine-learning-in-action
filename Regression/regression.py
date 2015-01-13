@@ -24,6 +24,8 @@ def loadDataSet(filename):
     return dataMat, labelMat
 
 #
+#   standard regression :  ws = xTx*(XT*Y)
+#
 def stdRegres(xArr, yArr):
     '''
     :param xArr, yArr:    input data Matrix and Label Matrix as (xArr, yArr)
@@ -36,3 +38,35 @@ def stdRegres(xArr, yArr):
         return
     ws = xTx.I * (xMat.T*yMat)
     return ws
+
+#
+#   local weighted linear regression : ws = xT*weights*x*(xT*weights*Y)
+#
+def lwlRegres(testPoint, xArr, yArr, k=1.0):
+    '''
+    :param testPoint:   test samples data
+    :param xArr:        input data Matrix x, data;
+    :param yArr:        input data Matrix y, label;
+    :param k:           weighted parameters of gauss model
+    :return:            testPoint * ws
+    '''
+    xMat = mat(xArr); yMat = mat(yArr).T
+    m = shape(xMat)[0]
+    weights = mat(eye(m))
+    for j in range(m):
+        diffMat = testPoint - xMat[j,:]
+        weights = exp(diffMat*diffMat.T/(-2.0*k**2))
+    xTx = xMat.T * (weights * xMat)
+
+    if linalg.det(xTx) == 0.0:
+        print "This matrix is singular, cannot be inverse"
+        return
+    ws = xTx.T * (xMat.T * (weights * yMat))
+    return testPoint*ws
+
+def lwlrTest(testArr, xArr, yArr, k=1.0):
+    m = shape(testArr) [0]
+    yHat = zeros(m)
+    for i in range(m):
+        yHat = lwlRegres(testArr[i], xArr, yArr, k)
+    return yHat

@@ -18,3 +18,5 @@ xCopy.sort(0)
 yHat = xCopy*ws
 ax.plot(xCopy[:,1], yHat)
 plt.show()
+
+print corrcoef(yHat.T, yMat)
