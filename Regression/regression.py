@@ -70,3 +70,36 @@ def lwlrTest(testArr, xArr, yArr, k=1.0):
     for i in range(m):
         yHat = lwlRegres(testArr[i], xArr, yArr, k)
     return yHat
+
+#
+#   ridge regression: ws = (xTx + lamda*I)* xT * Y
+#
+def ridgeRegres(xMat, yMat, lamda=0.2):
+    xTx = xMat.T*xMat
+    denom = xTx + eye(shape(xMat) [1])*lamda
+    if linalg.det(denom) == 0:
+        print "This matrix is singular, cannot be inverse"
+        return
+    ws = denom.I * (xMat.T*yMat)
+    return ws
+
+def ridgeRegresTest(xArr, yArr):
+    '''
+    :param xArr:    input data x Matrix
+    :param yArr:    input data y Matrix (labels)
+    :return:        use 30 different lamda for ridge regression, to test different effect.
+    '''
+    xMat = mat(xArr); yMat = mat(yArr)
+    yMean = mean(yMat, 0)
+    yMat = yMat - yMean
+    xMean = mean(xMat, 0)
+    xVar = var(xMat, 0)
+    xMat = (xMat - xMean)/xVar
+    numTestPts = 30
+    wMat = zeros((numTestPts, shape(xMat) [1]))
+
+    for i in range(numTestPts):
+        ws = ridgeRegres(xMat, yMat, exp(i-10))
+        wMat[i, :] = ws.T
+
+    return wMat
