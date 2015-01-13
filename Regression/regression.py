@@ -89,7 +89,7 @@ def ridgeRegresTest(xArr, yArr):
     :param yArr:    input data y Matrix (labels)
     :return:        use 30 different lamda for ridge regression, to test different effect.
     '''
-    xMat = mat(xArr); yMat = mat(yArr)
+    xMat = mat(xArr); yMat = mat(yArr).T
     yMean = mean(yMat, 0)
     yMat = yMat - yMean
     xMean = mean(xMat, 0)
