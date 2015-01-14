@@ -69,6 +69,6 @@ def file2matrix(filename):
         line = line.strip()
         listData = line.split('\t')
         dataMatrix[index,:] = listData[0:3]
-        labelClass.append(int(lisData[-1]))
+        labelClass.append(int(listData[-1]))
         index += 1
     return dataMatrix, labelClass
