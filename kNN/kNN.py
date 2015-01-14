@@ -72,3 +72,15 @@ def file2matrix(filename):
         labelClass.append(int(listData[-1]))
         index += 1
     return dataMatrix, labelClass
+
+#   Normalize
+def autoNorm(dataSet):
+    minVal = dataSet.min(0)
+    maxVal = dataSet.max(0)
+    ranges = maxVal - minVal
+    normDataSet = zeros(shape(dataSet))
+    m = dataSet.shape[0]
+    normDataSet = dataSet - tile(minVal, (m, 1))
+    normDataSet = normDataSet/tile(ranges, (m, 1))
+
+    return normDataSet, ranges, minVal
