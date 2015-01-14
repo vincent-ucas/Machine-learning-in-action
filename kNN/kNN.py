@@ -52,4 +52,23 @@ def kNNClassify(newInput, dataSet, labels, k):
 			maxCount = value
 			maxIndex = key
 
-	return maxIndex	
+	return maxIndex
+
+#
+#   input a data file, turn it into matrix for analyzing..
+#
+def file2matrix(filename):
+    # open a data file & read data for each line
+    fr = open(filename)
+    arrayofLines = fr.readlines()
+    numofLines = len(arrayofLines)
+    dataMatrix = zeros((numofLines, 3))
+    labelClass = []
+    index = 0
+    for line in arrayofLines:
+        line = line.strip()
+        listData = line.split('\t')
+        dataMatrix[index,:] = listData[0:3]
+        labelClass.append(int(lisData[-1]))
+        index += 1
+    return dataMatrix, labelClass
