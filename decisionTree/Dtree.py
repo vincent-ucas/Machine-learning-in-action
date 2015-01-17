@@ -6,6 +6,7 @@ __author__ = 'Vincent HE'
 """
 
 from math import log
+import operator
 
 def createDataSet():
     dataSet = [
@@ -71,7 +72,34 @@ def selectBestFeat(dataSet):
 
      return bestFeatId
 
+# ======  get the majority counting feature ============
+def getMajorityCnt(classList):
+    classCount = {}
+    for vote in classList:
+        if vote not in classCount.keys():
+            classCount[vote] = 0
+        classCount[vote] += 1
+    sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(1), reverse=True)
+    return classCount[0][0]
 
+# ===== create decision tree by recursion =======
+def createDtree(dataSet, labels):
+    classList = [example[-1] for example in dataSet]
+    if classList.count(classList[0]) == len(classList):     # no more class
+        return classList[0]
+    if len(dataSet[0]) == 1:                                # get majority count class
+        return getMajorityCnt(classList)
 
+    bestFeat = selectBestFeat(dataSet)
+    bestFeatLabel = labels[bestFeat]
+    myTree = {bestFeatLabel:{}}
+    del(labels[bestFeat])
 
+    featValues = [example[bestFeat] for example in dataSet]
+    uniqueVals = set(featValues)
+    for value in uniqueVals:
+        subLabels = labels[:]
+        myTree[bestFeatLabel][value] = createDtree(splitFeatData(dataSet, bestFeat, value), subLabels)
+
+    return myTree
 
