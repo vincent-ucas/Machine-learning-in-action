@@ -92,14 +92,29 @@ def createDtree(dataSet, labels):
 
     bestFeat = selectBestFeat(dataSet)
     bestFeatLabel = labels[bestFeat]
-    myTree = {bestFeatLabel:{}}
+    ret_tree = {bestFeatLabel:{}}
     del(labels[bestFeat])
 
     featValues = [example[bestFeat] for example in dataSet]
     uniqueVals = set(featValues)
     for value in uniqueVals:
         subLabels = labels[:]
-        myTree[bestFeatLabel][value] = createDtree(splitFeatData(dataSet, bestFeat, value), subLabels)
+        ret_tree[bestFeatLabel][value] = createDtree(splitFeatData(dataSet, bestFeat, value), subLabels)
 
-    return myTree
+    return ret_tree
+
+# ====== using decision tree classifier =======
+def classify(input_tree, feat_labels, test_vec):
+    node_str = input_tree.keys()[0]
+    sub_dict = input_tree[node_str]
+    feat_idx = feat_labels.index(node_str)
+
+    for key in sub_dict.keys():
+        if test_vec[feat_idx] == key:
+            if type(sub_dict[key]).__name__ == 'dict':
+                ret_label = classify(sub_dict[key], feat_labels, test_vec)
+            else:
+                ret_label = sub_dict[key]
+    return ret_label
+
 
