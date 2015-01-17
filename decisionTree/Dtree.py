@@ -117,4 +117,15 @@ def classify(input_tree, feat_labels, test_vec):
                 ret_label = sub_dict[key]
     return ret_label
 
+# ===== store decision tree: using pickle module ========
+def storeTree(input_tree, filename):
+    import pickle
+    fw = open(filename, 'w')
+    pickle.dump(input_tree, fw)
+    fw.close()
 
+# ==== load a file and grab decision tree ======
+def grabTree(filename):
+    import pickle
+    fr = open(filename)
+    return pickle.load(fr)
