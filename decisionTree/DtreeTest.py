@@ -9,5 +9,6 @@ import Dtree
 
 dataSet, labels= Dtree.createDataSet()
 #Dtree.calShannonEnt(dataSet)
-print Dtree.selectBestFeat(dataSet)
-print dataSet
+#print Dtree.selectBestFeat(dataSet)
+myTree = Dtree.createDtree(dataSet, labels)
+print myTree
