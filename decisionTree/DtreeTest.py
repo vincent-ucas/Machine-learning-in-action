@@ -1,4 +1,3 @@
-__author__ = 'Vincent HE'
 """
     $author:      Ming
     $date:        2015/01/16
@@ -6,9 +5,9 @@ __author__ = 'Vincent HE'
 """
 
 import Dtree
+import treePlotter
 
 dataSet, labels= Dtree.createDataSet()
-#Dtree.calShannonEnt(dataSet)
-#print Dtree.selectBestFeat(dataSet)
-myTree = Dtree.createDtree(dataSet, labels)
-print myTree
+decision_tree = Dtree.createDtree(dataSet, labels)
+treePlotter.plotDecisionTree(decision_tree)
+
